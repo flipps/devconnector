@@ -18,7 +18,7 @@ router.post('/register', (req, res) => {
     if (user) {
       return res.status(400).json({ email: 'Email already exists.' });
     } else {
-      // if there isn't an registered email, create an user
+      // if there isn't a registered email, create an user
       // gravatar new avatar
       const avatar = gravatar.url(req.body.email, {
         s: '200',
@@ -47,6 +47,31 @@ router.post('/register', (req, res) => {
         });
       });
     }
+  });
+});
+
+// @route GET api/users/login
+// @desc Login user / returning the JWT token
+// @access Public
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  //Find user by email
+  User.findOne({ email }).then(user => {
+    //check for user
+    if (!user) {
+      return res.status(404).json({ email: 'User not found.' });
+    }
+
+    // Check password
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        res.json({ msg: 'Success' });
+      } else {
+        return res.status(400).json({ password: 'Password incorrect.' });
+      }
+    });
   });
 });
 
