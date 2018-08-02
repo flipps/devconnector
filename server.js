@@ -15,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: false })); // extend: false to accept 
 app.use(bodyParser.json()); // parse json
 
 const db = require('./config/keys').mongoURI;
-
 mongoose
   .connect(db)
   .then(() => console.log('MongoDB has connected'))

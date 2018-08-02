@@ -11,8 +11,8 @@ options.secretOrKey = keys.secretOrKey;
 module.exports = passport => {
   passport.use(
     new JwtStrategy(options, (jwt_payload, done) => {
-      //get the user that is beign sent on the payload
-      User.findById(jwt_payload.id)
+      //get the user that is beign sent on the payload = jwt token and return payload.
+      User.findById(jwt_payload.id) // find user by id, returns a promise
         .then(user => {
           if (user) {
             //user found

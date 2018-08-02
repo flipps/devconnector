@@ -7,6 +7,9 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
 
+//Load input validation
+const validateRegisterInput = require('../../validation/register');
+
 // @route GET api/users/test
 // @desc Tests users route
 // @access Public
@@ -16,20 +19,27 @@ router.get('/test', (req, res) => res.json({ msg: 'Users works.' }));
 // @desc Register user
 // @access Public
 router.post('/register', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  //Check validation
+  if (!isValid) {
+    return res.status(400).json({ errors });
+  }
+
   //find if email exists
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      return res.status(400).json({ email: 'Email already exists.' });
+      errors.email = 'Email alread exists.';
+      return res.status(400).json({ errors });
     } else {
-      // if there isn't a registered email, create an user
-      // gravatar new avatar
+      // if there isn't a registered email, create an user, uncluding gravatar
       const avatar = gravatar.url(req.body.email, {
-        s: '200',
-        r: 'pg',
-        d: 'mm'
+        s: '200', //Size
+        r: 'pg', //rating
+        d: 'mm' //Default image placeholder option
       });
 
-      //New mongo User model
+      //New mongo User model, creates new user
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -63,14 +73,12 @@ router.post('/login', (req, res) => {
   //Find user by email
   User.findOne({ email }).then(user => {
     //check for user
-    if (!user) {
-      return res.status(404).json({ email: 'User not found.' });
-    }
+    if (!user) return res.status(404).json({ email: 'User not found.' });
 
     // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
-        // User matched
+        // User matched, passed so generate the token.
         const payload = {
           id: user.id,
           name: user.name,
