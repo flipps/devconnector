@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 //Bodyparser middleware
-app.use(bodyParser.urlencoded({ extended: false })); // extend: false to accept only string or arrays as the request object content
+app.use(bodyParser.urlencoded({ extended: false })); // extended: false to accept only string or arrays as the request object content
 app.use(bodyParser.json()); // parse json
 
 const db = require('./config/keys').mongoURI;
