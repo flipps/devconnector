@@ -42,3 +42,7 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.invalid-feedback {
+  display: block;
+}
