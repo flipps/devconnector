@@ -28,6 +28,8 @@ class Login extends Component {
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div className="container">
         <div className="row">
@@ -40,7 +42,9 @@ class Login extends Component {
               <div className="form-group">
                 <input
                   type="email"
-                  className="form-control form-control-lg"
+                  className={`form-control form-control-lg ${
+                    errors.email ? 'is-invalid' : ''
+                  }`}
                   placeholder="Email Address"
                   name="email"
                   value={this.state.email}
@@ -50,7 +54,9 @@ class Login extends Component {
               <div className="form-group">
                 <input
                   type="password"
-                  className="form-control form-control-lg"
+                  className={`form-control form-control-lg ${
+                    errors.password ? 'is-invalid' : ''
+                  }`}
                   placeholder="Password"
                   name="password"
                   value={this.state.password}
