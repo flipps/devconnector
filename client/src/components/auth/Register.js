@@ -9,10 +9,12 @@ class Register extends Component {
     super(props);
 
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      password2: '',
+      userState: {
+        name: '',
+        email: '',
+        password: '',
+        password2: ''
+      },
       errors: {}
     };
 
@@ -28,7 +30,7 @@ class Register extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const newUser = { ...this.state };
+    const newUser = { ...this.state.userState };
     delete newUser.errors;
 
     //Any action in redux us called with props
@@ -44,7 +46,7 @@ class Register extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, userState } = this.state;
     const { user } = this.props.auth;
 
     return (
@@ -66,7 +68,7 @@ class Register extends Component {
                     }`}
                     placeholder="Name"
                     name="name"
-                    value={this.state.name}
+                    value={userState.name}
                     onChange={this.onChange}
                   />
                   {errors.name && (
@@ -81,7 +83,7 @@ class Register extends Component {
                     }`}
                     placeholder="Email Address"
                     name="email"
-                    value={this.state.email}
+                    value={userState.email}
                     onChange={this.onChange}
                   />
                   {errors.email && (
@@ -100,7 +102,7 @@ class Register extends Component {
                     }`}
                     placeholder="Password"
                     name="password"
-                    value={this.state.password}
+                    value={userState.password}
                     onChange={this.onChange}
                   />
                   {errors.password && (
@@ -115,7 +117,7 @@ class Register extends Component {
                     }`}
                     placeholder="Confirm Password"
                     name="password2"
-                    value={this.state.password2}
+                    value={userState.password2}
                     onChange={this.onChange}
                   />
                   {errors.password2 && (
