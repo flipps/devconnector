@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
 
@@ -15,32 +16,39 @@ class Register extends Component {
       errors: {}
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  onChange(e) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
+
+  handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  onSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
+
     const newUser = { ...this.state };
     delete newUser.errors;
 
     //Any action in redux us called with props
-    this.props.registerUser(newUser);
+    this.props.registerUser(newUser, this.props.history);
   }
 
   render() {
     const { errors } = this.state;
-    const { user } = this.props.auth;
 
     return (
       <div className="register">
-        {user ? user.name : ''}
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
@@ -48,7 +56,7 @@ class Register extends Component {
               <p className="lead text-center">
                 Create your DevConnector account
               </p>
-              <form noValidate onSubmit={this.onSubmit}>
+              <form noValidate onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
@@ -58,7 +66,7 @@ class Register extends Component {
                     placeholder="Name"
                     name="name"
                     value={this.state.name}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                   />
                   {errors.name && (
                     <div className="invalid-feedback">{errors.name}</div>
@@ -73,7 +81,7 @@ class Register extends Component {
                     placeholder="Email Address"
                     name="email"
                     value={this.state.email}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                   />
                   {errors.email && (
                     <div className="invalid-feedback">{errors.email}</div>
@@ -92,7 +100,7 @@ class Register extends Component {
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                   />
                   {errors.password && (
                     <div className="invalid-feedback">{errors.password}</div>
@@ -107,7 +115,7 @@ class Register extends Component {
                     placeholder="Confirm Password"
                     name="password2"
                     value={this.state.password2}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                   />
                   {errors.password2 && (
                     <div className="invalid-feedback">{errors.password2}</div>
@@ -125,12 +133,16 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({ auth: state.auth });
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
 
 export default connect(
   mapStateToProps,
   { registerUser }
-)(Register);
+)(withRouter(Register)); //redirect.
