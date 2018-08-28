@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
@@ -9,12 +8,10 @@ class Register extends Component {
     super(props);
 
     this.state = {
-      userState: {
-        name: '',
-        email: '',
-        password: '',
-        password2: ''
-      },
+      name: '',
+      email: '',
+      password: '',
+      password2: '',
       errors: {}
     };
 
@@ -30,23 +27,15 @@ class Register extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const newUser = { ...this.state.userState };
+    const newUser = { ...this.state };
     delete newUser.errors;
 
     //Any action in redux us called with props
     this.props.registerUser(newUser);
-    // axios
-    //   .post('/api/users/register', newUser)
-    //   .then(res => console.log(res.data))
-    //   .catch(error =>
-    //     this.setState({
-    //       errors: error.response.data.errors
-    //     })
-    //   );
   }
 
   render() {
-    const { errors, userState } = this.state;
+    const { errors } = this.state;
     const { user } = this.props.auth;
 
     return (
@@ -68,7 +57,7 @@ class Register extends Component {
                     }`}
                     placeholder="Name"
                     name="name"
-                    value={userState.name}
+                    value={this.state.name}
                     onChange={this.onChange}
                   />
                   {errors.name && (
@@ -83,7 +72,7 @@ class Register extends Component {
                     }`}
                     placeholder="Email Address"
                     name="email"
-                    value={userState.email}
+                    value={this.state.email}
                     onChange={this.onChange}
                   />
                   {errors.email && (
@@ -102,7 +91,7 @@ class Register extends Component {
                     }`}
                     placeholder="Password"
                     name="password"
-                    value={userState.password}
+                    value={this.state.password}
                     onChange={this.onChange}
                   />
                   {errors.password && (
@@ -117,7 +106,7 @@ class Register extends Component {
                     }`}
                     placeholder="Confirm Password"
                     name="password2"
-                    value={userState.password2}
+                    value={this.state.password2}
                     onChange={this.onChange}
                   />
                   {errors.password2 && (
