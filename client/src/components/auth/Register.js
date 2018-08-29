@@ -145,4 +145,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { registerUser }
-)(withRouter(Register)); //redirect.
+)(withRouter(Register)); //access history from component.
