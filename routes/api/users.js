@@ -81,9 +81,13 @@ router.post('/login', (req, res) => {
   //Find user by email
   User.findOne({ email }).then(user => {
     //check for user
+    /**
+     * TODO:
+     * change status to 401? and message to something like 'Wrong credentials'
+     */
     if (!user) {
       errors.email = 'User not found';
-      return res.status(404).json(errors);
+      return res.status(404).json({ errors });
     }
 
     // Check password
@@ -110,7 +114,7 @@ router.post('/login', (req, res) => {
         );
       } else {
         errors.password = 'Password incorrect';
-        return res.status(400).json(errors);
+        return res.status(400).json({ errors });
       }
     });
   });
