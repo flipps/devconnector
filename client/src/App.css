@@ -46,3 +46,9 @@ img {
 .invalid-feedback {
   display: block;
 }
+
+.avatar-img {
+  width: 25px;
+  margin-right: 5px;
+  border-radius: 9999px;
+}
