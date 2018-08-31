@@ -1,3 +1,4 @@
 /node_modules
+/config/keys.js
 package-lock.json
 .devconnector-acces-token
